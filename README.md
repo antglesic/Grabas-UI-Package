@@ -89,7 +89,7 @@ See [LICENSE.txt](./LICENSE.txt).
 
 ## Author
 
-Antonio Glešiæ
+Antonio GleÅ¡iÄ‡
 
 ## Repository
 
