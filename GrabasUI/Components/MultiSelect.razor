@@ -1,0 +1,59 @@
+﻿@using GrabasUI.Components
+@typeparam T
+
+@if (SelectedValues != null && SelectedValues.Any())
+{
+	<!-- Dropdown value container that has the Selected Values displayed -->
+	<div class="dropdown-value-container" style="@(GetHeight() + GetWidth())">
+		@foreach (var item in SelectedValues.Cast<T>().ToList())
+		{
+			<div class="dropdown-multi-value-container">
+				<div class="dropdown-multi-value-container-label">
+					@GetPropertyValue(item, DisplayProperty)
+				</div>
+				<button class="drodown-multi-value-container-clear" title="Remove item" @onclick:stopPropagation="true" @onclick="() => RemoveItem(GetPropertyValue(item, IdentifierProperty) ?? string.Empty)">
+					<svg height="14" width="14" viewBox="0 0 20 20" aria-hidden="true" focusable="false" class="dropdown-multi-value-container-clear-svg">
+						<path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"></path>
+					</svg>
+				</button>
+			</div>
+		}
+	</div>
+}
+
+<div class="dropdown-container @(isDropdownOpen ? "open" : "")" @onclick="ToggleDropdown"
+	 style="@(GetHeight() + GetWidth() + GetCustomStyle())">
+
+	@if (CanSearch)
+	{
+		<!-- Search Box -->
+		<input type="text" placeholder="@(SearchPlaceHolder)" @oninput="FilterItems" class="dropdown-search" />
+	}
+
+	<!-- Dropdown with Multiple Selections -->
+	<div class="dropdown-list" @onclick:stopPropagation="true">
+		@if (FilteredItemList != null && FilteredItemList.Any())
+		{
+			@foreach (var item in FilteredItemList)
+			{
+				<div class="dropdown-item">
+					<input type="checkbox"
+						   id="@($"{ComponentId}_{GetPropertyValue(item, IdentifierProperty)}")"
+						   value="@GetPropertyValue(item, IdentifierProperty)"
+						   checked="@IsSelected(item)"
+						   @onchange="() => OnValueChanged(item)"
+						   class="dropdown-checkbox" />
+					<label for="@($"{ComponentId}_{GetPropertyValue(item, IdentifierProperty)}")" class="dropdown-label">
+						@GetPropertyValue(item, DisplayProperty)
+					</label>
+				</div>
+			}
+		}
+		else
+		{
+			<div class="dropdown-item disabled">
+				No items available
+			</div>
+		}
+	</div>
+</div>

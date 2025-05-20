@@ -1,0 +1,44 @@
+﻿@using GrabasUI.Components
+@typeparam T
+
+<div class="dropdown-container @(isDropdownOpen ? "open" : "")"
+	 @onclick="ToggleDropdown"
+	 style="@(GetHeight() + GetWidth() + GetCustomStyle())">
+
+	@if (!isDropdownOpen)
+	{
+		<!-- Display selected value or placeholder depending on the state of the dropdown if it's opened or closed -->
+		<div class="dropdown-selected">
+			@(SelectedItem != null ? GetPropertyValue(SelectedItem, DisplayProperty) : SearchPlaceHolder)
+		</div>
+	}
+	else if (CanSearch)
+	{
+		<!-- Search Box -->
+		<input type="text"
+			   placeholder="@(SearchPlaceHolder)"
+			   @oninput="FilterItems"
+			   class="dropdown-search"
+			   @onclick:stopPropagation="true" />
+	}
+
+	<!-- Dropdown List for Single Selection -->
+	<div class="dropdown-list" @onclick:stopPropagation="true">
+		@if (FilteredItemList != null && FilteredItemList.Any())
+		{
+			@foreach (var item in FilteredItemList)
+			{
+				<div class="dropdown-item"
+					 @onclick="() => OnValueChanged(item)">
+					@GetPropertyValue(item, DisplayProperty)
+				</div>
+			}
+		}
+		else
+		{
+			<div class="dropdown-item disabled">
+				No items available
+			</div>
+		}
+	</div>
+</div>
