@@ -1,4 +1,4 @@
-namespace GrabasUI.Components.Common.EventArgs
+namespace GrabaUIPackage.Components.Common.EventArgs
 {
 	public class PageChangedEventArgs
 	{

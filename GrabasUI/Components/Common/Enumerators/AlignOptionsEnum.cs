@@ -1,4 +1,4 @@
-namespace GrabasUI.Components.Common.Enumerators
+namespace GrabaUIPackage.Components.Common.Enumerators
 {
 	/// <summary>
 	/// Enumerator with values for horizontal alignment.

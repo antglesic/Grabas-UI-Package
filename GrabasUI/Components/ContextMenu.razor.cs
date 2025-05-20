@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace GrabasUI.Components
+namespace GrabaUIPackage.Components
 {
 	public partial class ContextMenu : ComponentBase
 	{

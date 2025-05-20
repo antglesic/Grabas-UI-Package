@@ -1,8 +1,8 @@
-﻿using GrabasUI.Components.Common.EventArgs;
+﻿using GrabaUIPackage.Components.Common.EventArgs;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace GrabasUI.Components
+namespace GrabaUIPackage.Components
 {
 	public partial class DataGrid<TItem> : ComponentBase
 	{
@@ -323,19 +323,19 @@ namespace GrabasUI.Components
 			}
 			else
 			{
-				int middlePosition = (pagerSize / 2);
+				int middlePosition = pagerSize / 2;
 
-				if (currentPage < (middlePosition + 1))
+				if (currentPage < middlePosition + 1)
 				{
 					pagingNumbers = [.. Enumerable.Range(1, pagerSize - 1), .. new[] { totalPages }];
 				}
-				else if (currentPage > (totalPages - middlePosition))
+				else if (currentPage > totalPages - middlePosition)
 				{
-					pagingNumbers = [.. (new[] { 1 }), .. Enumerable.Range(totalPages - pagerSize + 2, pagerSize - 1)];
+					pagingNumbers = [.. new[] { 1 }, .. Enumerable.Range(totalPages - pagerSize + 2, pagerSize - 1)];
 				}
 				else
 				{
-					pagingNumbers = [.. (new[] { 1 }), .. Enumerable.Range(currentPage - middlePosition + 1, pagerSize - 2), totalPages];
+					pagingNumbers = [.. new[] { 1 }, .. Enumerable.Range(currentPage - middlePosition + 1, pagerSize - 2), totalPages];
 				}
 			}
 		}
