@@ -79,10 +79,6 @@ GrabasUI is a Blazor component library providing reusable, customizable UI compo
 - `OnClick`: Click event callback.
 - `Disabled`: Disable the item.
 
-## Example
-
-See the `Weather.razor` page for a full example combining DataGrid, DropDown, and MultiSelect.
-
 ## License
 
 See [LICENSE.txt](./LICENSE.txt).
