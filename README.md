@@ -12,11 +12,8 @@ GrabasUI is a Blazor component library providing reusable, customizable UI compo
 
 ## Installation
 
-1. Add the NuGet package to your Blazor project:
-
-2. Register the required services in your `Program.cs`:
-
-3. Add static assets and styles in your `App.razor` or `_Host.cshtml`:
+1. Add the NuGet package to your Blazor project:dotnet add package GrabaUIPackage
+2. Add a reference to the GrabaUIPackage.Components namespace in your `_Imports.razor` file:@using GrabaUIPackage.Components
 
 ## Usage
 
