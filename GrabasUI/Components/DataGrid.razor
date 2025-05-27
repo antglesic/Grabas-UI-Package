@@ -128,11 +128,14 @@
 					<tr @key="item" class="@GetRowSelectedClass(item)" @onclick="() => OnRowClick(item)">
 						<td style="width: 40px;">
 							<div class="form-check">
-								<input type="checkbox"
-									   class="form-check-input"
-									   checked="@IsRowSelected(item)"
-									   @onclick:stopPropagation
-									   @onchange="(e) => OnRowCheckboxChange(item, e)" />
+								@if(EnableRowSelection || MultiSelectionEnabled)
+								{
+									<input type="checkbox"
+										   class="form-check-input"
+										   checked="@IsRowSelected(item)"
+										   @onclick:stopPropagation
+										   @onchange="(e) => OnRowCheckboxChange(item, e)" />
+								}
 							</div>
 						</td>
 						@if (Columns != null)
