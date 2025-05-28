@@ -8,7 +8,7 @@ namespace GrabaUIPackage.Components
 	{
 		private int totalPages;
 		private int currentPage;
-		private readonly int pagerSize = 7;
+		private int pagerSize = 7;
 		private int[]? pagingNumbers;
 
 		[Parameter]
@@ -25,6 +25,9 @@ namespace GrabaUIPackage.Components
 
 		[Parameter]
 		public EventCallback<PageChangedEventArgs> OnPageChanged { get; set; }
+
+		[Parameter]
+		public EventCallback<PageSizeChangedEventArgs> OnPageSizeChanged { get; set; }
 
 		[Parameter]
 		public int[]? PageSizeOptions { get; set; }
@@ -57,7 +60,20 @@ namespace GrabaUIPackage.Components
 		public EventCallback<TItem> SelectedRowItemChanged { get; set; }
 
 		[Parameter]
-		public int PageSize { get; set; }
+		public int PageSize
+		{
+			get { return pagerSize; }
+			set
+			{
+				if (EqualityComparer<int>.Default.Equals(pagerSize, value))
+				{
+					return;
+				}
+
+				pagerSize = value;
+				_ = OnPageSizeChanged.InvokeAsync(new PageSizeChangedEventArgs { PageSize = value });
+			}
+		}
 
 		[Parameter]
 		public bool Filterable { get; set; }
@@ -186,8 +202,7 @@ namespace GrabaUIPackage.Components
 				PageSizeOptions = [10, 20, 30];
 				PageSize = 10;
 			}
-
-			if (PageSize == 0)
+			else
 			{
 				PageSize = PageSizeOptions.FirstOrDefault();
 			}
@@ -231,6 +246,7 @@ namespace GrabaUIPackage.Components
 			if (RowCount.HasValue)
 			{
 				await OnPageChanged.InvokeAsync(new PageChangedEventArgs() { CurrentPage = currentPage, PageSize = PageSize });
+				await OnPageSizeChanged.InvokeAsync(new PageSizeChangedEventArgs() { PageSize = PageSize });
 				ItemList = Items;
 			}
 			else
