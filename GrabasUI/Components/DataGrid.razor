@@ -204,7 +204,7 @@
 					}
 				</ul>
 			}
-			<div class="pagination__info">@(currentPage* PageSize + 1 - PageSize) - @CalculatePagerItems() od @(RowCount ?? Items.Count())</div>
+			<div class="pagination__info">@(currentPage* PageSize + 1 - PageSize) - @CalculatePagerItems() of @(RowCount ?? Items.Count())</div>
 			<div>
 				<div class="pagination__perPage">
 					Results per page
