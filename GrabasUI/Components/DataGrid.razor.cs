@@ -24,6 +24,9 @@ namespace GrabaUIPackage.Components
 		public int? RowCount { get; set; }
 
 		[Parameter]
+		public bool? FrontendPagination { get; set; } = false;
+
+		[Parameter]
 		public EventCallback<PageChangedEventArgs> OnPageChanged { get; set; }
 
 		[Parameter]
@@ -255,6 +258,12 @@ namespace GrabaUIPackage.Components
 			else
 			{
 				ItemList = Items?.Skip((currentPage - 1) * PageSize).Take(PageSize);
+
+				if (FrontendPagination.HasValue && FrontendPagination.Value)
+				{
+					await OnPageChanged.InvokeAsync(new PageChangedEventArgs() { CurrentPage = currentPage, PageSize = PageSize });
+					await OnPageSizeChanged.InvokeAsync(new PageSizeChangedEventArgs() { PageSize = PageSize });
+				}
 			}
 
 			CalculatePagingNumbers(currentPage, RowCount ?? (Items != null ? Items.Count() : 0));
