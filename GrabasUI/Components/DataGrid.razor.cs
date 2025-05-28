@@ -8,8 +8,8 @@ namespace GrabaUIPackage.Components
 	{
 		private int totalPages;
 		private int currentPage;
-		private int pagerSize = 7;
 		private int[]? pagingNumbers;
+		private int internalPageSize;
 
 		[Parameter]
 		public RenderFragment? ChildContent { get; set; }
@@ -62,15 +62,15 @@ namespace GrabaUIPackage.Components
 		[Parameter]
 		public int PageSize
 		{
-			get { return pagerSize; }
+			get => internalPageSize;
 			set
 			{
-				if (EqualityComparer<int>.Default.Equals(pagerSize, value))
+				if (EqualityComparer<int>.Default.Equals(internalPageSize, value))
 				{
 					return;
 				}
 
-				pagerSize = value;
+				internalPageSize = value;
 				_ = OnPageSizeChanged.InvokeAsync(new PageSizeChangedEventArgs { PageSize = value });
 			}
 		}
@@ -200,9 +200,12 @@ namespace GrabaUIPackage.Components
 			if (PageSizeOptions == null)
 			{
 				PageSizeOptions = [10, 20, 30];
-				PageSize = 10;
+				if (internalPageSize == 0) // Only set if not already set
+				{
+					PageSize = 10;
+				}
 			}
-			else
+			else if (internalPageSize == 0) // Only set if not already set
 			{
 				PageSize = PageSizeOptions.FirstOrDefault();
 			}
@@ -331,27 +334,28 @@ namespace GrabaUIPackage.Components
 
 		private void CalculatePagingNumbers(int currentPage, int totalRows)
 		{
+			var defaultPagerSize = 7; // Default pager size moved here
 			totalPages = (int)Math.Ceiling(totalRows / (decimal)PageSize);
 
-			if (totalPages <= pagerSize)
+			if (totalPages <= defaultPagerSize)
 			{
 				pagingNumbers = [.. Enumerable.Range(1, totalPages)];
 			}
 			else
 			{
-				int middlePosition = pagerSize / 2;
+				int middlePosition = defaultPagerSize / 2;
 
 				if (currentPage < middlePosition + 1)
 				{
-					pagingNumbers = [.. Enumerable.Range(1, pagerSize - 1), .. new[] { totalPages }];
+					pagingNumbers = [.. Enumerable.Range(1, defaultPagerSize - 1), .. new[] { totalPages }];
 				}
 				else if (currentPage > totalPages - middlePosition)
 				{
-					pagingNumbers = [.. new[] { 1 }, .. Enumerable.Range(totalPages - pagerSize + 2, pagerSize - 1)];
+					pagingNumbers = [.. new[] { 1 }, .. Enumerable.Range(totalPages - defaultPagerSize + 2, defaultPagerSize - 1)];
 				}
 				else
 				{
-					pagingNumbers = [.. new[] { 1 }, .. Enumerable.Range(currentPage - middlePosition + 1, pagerSize - 2), totalPages];
+					pagingNumbers = [.. new[] { 1 }, .. Enumerable.Range(currentPage - middlePosition + 1, defaultPagerSize - 2), totalPages];
 				}
 			}
 		}
